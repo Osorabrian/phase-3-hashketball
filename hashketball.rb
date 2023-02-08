@@ -127,3 +127,93 @@ def game_hash
 end
 
 # Write code here
+def num_points_scored name 
+    game_hash.each do |place,info|
+      info.each do|attribute,properties|
+        if attribute == :players
+         properties.each do |p| 
+             if p[:player_name] == name
+              return p[:points]
+             end
+         end
+      end
+    end
+    end
+end
+
+def shoe_size name
+  game_hash.each do |attribute,properties|
+    properties.each do |place, info|
+      if place == :players
+        info.each do |player|
+          if player[:player_name] == name
+            return player[:shoe]
+          end
+        end
+      end
+    end
+  end
+end
+
+def team_colors name
+  game_hash.each do |location, info|
+      if info[:team_name] ==  name
+          return info[:colors].map{|color| "#{color}"}
+      end
+  end
+end
+
+def team_names
+  game_hash.map do |attribute, properties|
+   pp properties[:team_name]
+  end
+end
+
+def player_numbers name
+  arr = []
+  game_hash.map do |attribute, properties|
+    if properties[:team_name] == name
+      properties[:players].each do |player|
+        arr << player[:number]
+      end
+    end
+   end
+   return arr
+end
+
+def player_stats name
+  game_hash.map do |attribute, properties|
+   properties.each do |a,b|
+     if a == :players
+      b.each do |c|
+        if c[:player_name] == name
+          return c
+        end
+      end
+     end
+   end
+  end
+end
+
+def big_shoe_rebounds
+  arr = []
+  game_hash.map do |attribute, properties|
+    properties.each do |a,b|
+      if a == :players
+       b.each do |c|
+           arr << c[:shoe]
+       end
+      end
+    end
+   end
+
+   game_hash.each do |location,info|
+    info.each do |y,z|
+      if y == :players
+        z.each{|a| return a[:rebounds] if a[:shoe] == arr.max()}
+      end
+    end
+   end
+end
+
+puts big_shoe_rebounds
